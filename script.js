@@ -17,6 +17,37 @@ const screens = {
 };
 
 
+// ======================================================
+// 🎵 MÚSICA
+// ======================================================
+
+const backgroundMusic = new Audio("musica.mp3");
+
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.35;
+
+
+function playMusic() {
+
+    backgroundMusic.play().catch(() => {
+        // O navegador pode bloquear o áudio até o jogador interagir.
+    });
+
+}
+
+
+function stopMusic() {
+
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
+
+}
+
+
+// ======================================================
+// MOSTRAR TELA
+// ======================================================
+
 function showScreen(name) {
 
     Object.values(screens).forEach(screen => {
@@ -158,6 +189,9 @@ const obstacles = [
 document
     .getElementById("startButton")
     .addEventListener("click", () => {
+
+        // 🎵 Começa a música quando o jogador interage
+        playMusic();
 
         startNewGame();
 
@@ -384,6 +418,9 @@ document
 function startNewGame() {
 
     stopGame();
+
+    // 🎵 Retoma a música caso seja um novo jogo
+    playMusic();
 
     lives = 3;
     coins = 0;
@@ -658,6 +695,7 @@ function rescueAnimal(animal) {
     updateUI();
 
     checkHighScore();
+
 
 }
 
