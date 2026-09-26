@@ -4,24 +4,11 @@
 
 
 // ======================================================
-// TELAS
+// 🎵 MÚSICA DO JOGO
 // ======================================================
 
-const screens = {
-    home: document.getElementById("homeScreen"),
-    game: document.getElementById("gameScreen"),
-    shop: document.getElementById("shopScreen"),
-    donation: document.getElementById("donationScreen"),
-    howTo: document.getElementById("howToScreen"),
-    records: document.getElementById("recordsScreen")
-};
-
-
-// ======================================================
-// 🎵 MÚSICA
-// ======================================================
-
-const backgroundMusic = new Audio("musica.mp3");
+const backgroundMusic =
+    new Audio("musica_bichinhos_game.wav");
 
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.35;
@@ -29,9 +16,7 @@ backgroundMusic.volume = 0.35;
 
 function playMusic() {
 
-    backgroundMusic.play().catch(() => {
-        // O navegador pode bloquear o áudio até o jogador interagir.
-    });
+    backgroundMusic.play().catch(() => {});
 
 }
 
@@ -39,30 +24,58 @@ function playMusic() {
 function stopMusic() {
 
     backgroundMusic.pause();
+
     backgroundMusic.currentTime = 0;
 
 }
 
 
 // ======================================================
-// MOSTRAR TELA
+// TELAS
 // ======================================================
+
+const screens = {
+
+    home: document.getElementById("homeScreen"),
+
+    game: document.getElementById("gameScreen"),
+
+    shop: document.getElementById("shopScreen"),
+
+    donation: document.getElementById("donationScreen"),
+
+    howTo: document.getElementById("howToScreen"),
+
+    records: document.getElementById("recordsScreen")
+
+};
+
 
 function showScreen(name) {
 
     Object.values(screens).forEach(screen => {
+
         screen.classList.remove("active");
+
     });
+
 
     screens[name].classList.add("active");
 
+
     if (name === "shop") {
+
         updateShop();
+
     }
 
+
     if (name === "records") {
+
         updateRecords();
+
     }
+
 }
 
 
@@ -100,16 +113,23 @@ const toast =
 // ======================================================
 
 let lives = 3;
+
 let coins = 0;
+
 let score = 0;
+
 let level = 1;
+
 let combo = 0;
 
 let gameRunning = false;
+
 let paused = false;
 
 let animalSpeed = 1;
+
 let coinMultiplier = 1;
+
 let scoreMultiplier = 1;
 
 let rescuedThisGame = 0;
@@ -120,8 +140,11 @@ let rescuedThisGame = 0;
 // ======================================================
 
 let speedPrice = 30;
+
 let lifePrice = 50;
+
 let coinPrice = 75;
+
 let scorePrice = 100;
 
 
@@ -144,7 +167,9 @@ let totalCoins =
 // ======================================================
 
 let animalInterval = null;
+
 let obstacleInterval = null;
+
 let difficultyInterval = null;
 
 
@@ -153,6 +178,7 @@ let difficultyInterval = null;
 // ======================================================
 
 const animals = [
+
     "🐶",
     "🐱",
     "🐰",
@@ -165,6 +191,7 @@ const animals = [
     "🐸",
     "🐥",
     "🐷"
+
 ];
 
 
@@ -173,12 +200,14 @@ const animals = [
 // ======================================================
 
 const obstacles = [
+
     "🪨",
     "💣",
     "🗑️",
     "🌵",
     "⚡",
     "🔥"
+
 ];
 
 
@@ -190,7 +219,6 @@ document
     .getElementById("startButton")
     .addEventListener("click", () => {
 
-        // 🎵 Começa a música quando o jogador interage
         playMusic();
 
         startNewGame();
@@ -324,10 +352,15 @@ document
 
         if (!gameRunning) return;
 
+
         if (paused) {
+
             resumeGame();
+
         } else {
+
             pauseGame();
+
         }
 
     });
@@ -337,9 +370,11 @@ function pauseGame() {
 
     paused = true;
 
+
     document
         .getElementById("pauseOverlay")
         .classList.remove("hidden");
+
 
     document
         .getElementById("pauseButton")
@@ -352,9 +387,11 @@ function resumeGame() {
 
     paused = false;
 
+
     document
         .getElementById("pauseOverlay")
         .classList.add("hidden");
+
 
     document
         .getElementById("pauseButton")
@@ -386,9 +423,11 @@ document
 
         stopGame();
 
+
         document
             .getElementById("pauseOverlay")
             .classList.add("hidden");
+
 
         showScreen("home");
 
@@ -419,45 +458,68 @@ function startNewGame() {
 
     stopGame();
 
-    // 🎵 Retoma a música caso seja um novo jogo
+
+    // 🎵 Garante que a música comece novamente
     playMusic();
 
+
     lives = 3;
+
     coins = 0;
+
     score = 0;
+
     level = 1;
+
     combo = 0;
+
 
     rescuedThisGame = 0;
 
+
     animalSpeed = 1;
+
     coinMultiplier = 1;
+
     scoreMultiplier = 1;
 
+
     speedPrice = 30;
+
     lifePrice = 50;
+
     coinPrice = 75;
+
     scorePrice = 100;
 
+
     gameRunning = true;
+
     paused = false;
+
 
     clearObjects();
 
+
     showScreen("game");
+
 
     document
         .getElementById("gameOverOverlay")
         .classList.add("hidden");
 
+
     document
         .getElementById("pauseOverlay")
         .classList.add("hidden");
 
+
     gameMessage.textContent =
         "Salve os bichinhos! 🐾";
 
+
     updateUI();
+
 
     startGameLoops();
 
@@ -475,10 +537,12 @@ function startGameLoops() {
         1200
     );
 
+
     obstacleInterval = setInterval(
         createObstacle,
         1500
     );
+
 
     difficultyInterval = setInterval(
         increaseDifficulty,
@@ -494,13 +558,23 @@ function stopGame() {
 
     paused = false;
 
+
     clearInterval(animalInterval);
+
     clearInterval(obstacleInterval);
+
     clearInterval(difficultyInterval);
 
+
     animalInterval = null;
+
     obstacleInterval = null;
+
     difficultyInterval = null;
+
+
+    // 🎵 Para a música
+    stopMusic();
 
 }
 
@@ -513,12 +587,17 @@ function increaseDifficulty() {
 
     if (!gameRunning) return;
 
+
     level++;
 
-    levelElement.textContent = level;
+
+    levelElement.textContent =
+        level;
+
 
     gameMessage.textContent =
         `🌟 Fase ${level}!`;
+
 
     showToast(
         `🌟 Você chegou à fase ${level}!`
@@ -535,10 +614,14 @@ function createAnimal() {
 
     if (!gameRunning || paused) return;
 
+
     const animal =
         document.createElement("div");
 
-    animal.className = "animal";
+
+    animal.className =
+        "animal";
+
 
     animal.textContent =
         animals[
@@ -547,11 +630,14 @@ function createAnimal() {
             )
         ];
 
+
     const maxX =
         gameArea.clientWidth - 90;
 
+
     const maxY =
         gameArea.clientHeight - 160;
+
 
     const x =
         Math.max(
@@ -559,19 +645,24 @@ function createAnimal() {
             Math.random() * maxX
         );
 
+
     const y =
         Math.max(
             90,
             Math.random() * maxY
         );
 
+
     animal.style.left =
         `${x}px`;
+
 
     animal.style.top =
         `${y}px`;
 
+
     gameArea.appendChild(animal);
+
 
     animal.addEventListener(
         "click",
@@ -579,6 +670,7 @@ function createAnimal() {
 
             if (!gameRunning || paused)
                 return;
+
 
             rescueAnimal(animal);
 
@@ -591,6 +683,7 @@ function createAnimal() {
             1500,
             4000 - level * 120
         );
+
 
     setTimeout(() => {
 
@@ -618,21 +711,29 @@ function rescueAnimal(animal) {
     if (!animal.parentNode)
         return;
 
+
     const x =
         animal.offsetLeft;
+
 
     const y =
         animal.offsetTop;
 
+
     createRescueEffect(x, y);
+
 
     animal.remove();
 
+
     combo++;
+
 
     rescuedThisGame++;
 
+
     totalRescued++;
+
 
     localStorage.setItem(
         "totalRescued",
@@ -661,9 +762,12 @@ function rescueAnimal(animal) {
 
     coins += earnedCoins;
 
+
     score += earnedScore;
 
+
     totalCoins += earnedCoins;
+
 
     localStorage.setItem(
         "totalCoins",
@@ -692,10 +796,11 @@ function rescueAnimal(animal) {
 
     updateCombo();
 
+
     updateUI();
 
-    checkHighScore();
 
+    checkHighScore();
 
 }
 
@@ -729,11 +834,14 @@ function createObstacle() {
     if (!gameRunning || paused)
         return;
 
+
     const obstacle =
         document.createElement("div");
 
+
     obstacle.className =
         "obstacle";
+
 
     obstacle.textContent =
         obstacles[
@@ -747,15 +855,20 @@ function createObstacle() {
         Math.random() *
         (gameArea.clientHeight - 170) + 90;
 
-    obstacle.style.left = "-80px";
+
+    obstacle.style.left =
+        "-80px";
+
 
     obstacle.style.top =
         `${y}px`;
+
 
     gameArea.appendChild(obstacle);
 
 
     let position = -80;
+
 
     const speed =
         2 +
@@ -787,6 +900,7 @@ function createObstacle() {
 
         position += speed;
 
+
         obstacle.style.left =
             `${position}px`;
 
@@ -809,17 +923,22 @@ function createObstacle() {
                 const animalX =
                     animal.offsetLeft;
 
+
                 const animalY =
                     animal.offsetTop;
 
+
                 animal.remove();
+
 
                 createRescueEffect(
                     animalX,
                     animalY
                 );
 
+
                 loseLife();
+
 
                 obstacle.remove();
 
@@ -861,6 +980,7 @@ function checkCollision(a, b) {
     const rectA =
         a.getBoundingClientRect();
 
+
     const rectB =
         b.getBoundingClientRect();
 
@@ -883,9 +1003,12 @@ function loseLife() {
 
     lives--;
 
+
     combo = 0;
 
+
     updateCombo();
+
 
     updateUI();
 
@@ -912,9 +1035,16 @@ function endGame() {
 
     gameRunning = false;
 
+
     clearInterval(animalInterval);
+
     clearInterval(obstacleInterval);
+
     clearInterval(difficultyInterval);
+
+
+    // 🎵 Para a música no Game Over
+    stopMusic();
 
 
     checkHighScore();
@@ -957,7 +1087,9 @@ document
             .getElementById("gameOverOverlay")
             .classList.add("hidden");
 
+
         stopGame();
+
 
         showScreen("home");
 
@@ -974,17 +1106,21 @@ function updateShop() {
         .getElementById("shopCoins")
         .textContent = coins;
 
+
     document
         .getElementById("speedPrice")
         .textContent = speedPrice;
+
 
     document
         .getElementById("lifePrice")
         .textContent = lifePrice;
 
+
     document
         .getElementById("coinPrice")
         .textContent = coinPrice;
+
 
     document
         .getElementById("scorePrice")
@@ -1005,13 +1141,18 @@ function buyItem(price, callback) {
 
     }
 
+
     coins -= price;
+
 
     callback();
 
+
     updateUI();
 
+
     updateShop();
+
 
     return true;
 
@@ -1032,10 +1173,12 @@ document
 
                 animalSpeed += .2;
 
+
                 speedPrice =
                     Math.floor(
                         speedPrice * 1.7
                     );
+
 
                 showToast(
                     "⚡ Patinhas melhoradas!"
@@ -1061,10 +1204,12 @@ document
 
                 lives++;
 
+
                 lifePrice =
                     Math.floor(
                         lifePrice * 1.8
                     );
+
 
                 showToast(
                     "❤️ Você ganhou uma vida!"
@@ -1090,265 +1235,13 @@ document
 
                 coinMultiplier += .5;
 
+
                 coinPrice =
                     Math.floor(
                         coinPrice * 1.9
                     );
 
+
                 showToast(
                     "🧲 Agora você ganha mais moedas!"
                 );
-
-            }
-        );
-
-    });
-
-
-// ======================================================
-// PONTOS
-// ======================================================
-
-document
-    .getElementById("scoreUpgrade")
-    .addEventListener("click", () => {
-
-        buyItem(
-            scorePrice,
-            () => {
-
-                scoreMultiplier += .4;
-
-                scorePrice =
-                    Math.floor(
-                        scorePrice * 2
-                    );
-
-                showToast(
-                    "🌟 Super resgate ativado!"
-                );
-
-            }
-        );
-
-    });
-
-
-// ======================================================
-// ATUALIZAR INTERFACE
-// ======================================================
-
-function updateUI() {
-
-    livesElement.textContent =
-        lives;
-
-    coinsElement.textContent =
-        coins;
-
-    scoreElement.textContent =
-        score;
-
-    levelElement.textContent =
-        level;
-
-    updateShop();
-
-}
-
-
-// ======================================================
-// RECORDES
-// ======================================================
-
-function checkHighScore() {
-
-    if (score > highScore) {
-
-        highScore = score;
-
-        localStorage.setItem(
-            "animalHighScore",
-            highScore
-        );
-
-    }
-
-}
-
-
-function updateRecords() {
-
-    document
-        .getElementById("highScore")
-        .textContent = highScore;
-
-    document
-        .getElementById("totalRescued")
-        .textContent = totalRescued;
-
-    document
-        .getElementById("totalCoins")
-        .textContent = totalCoins;
-
-}
-
-
-// ======================================================
-// EFEITO DE MOEDA
-// ======================================================
-
-function createCoinPopup(x, y, text) {
-
-    const popup =
-        document.createElement("div");
-
-    popup.className =
-        "coin-popup";
-
-    popup.textContent =
-        text;
-
-    popup.style.left =
-        `${x}px`;
-
-    popup.style.top =
-        `${y}px`;
-
-    gameArea.appendChild(popup);
-
-
-    setTimeout(() => {
-
-        popup.remove();
-
-    }, 800);
-
-}
-
-
-// ======================================================
-// EFEITO DE RESGATE
-// ======================================================
-
-function createRescueEffect(x, y) {
-
-    const effect =
-        document.createElement("div");
-
-    effect.className =
-        "rescue-effect";
-
-    effect.textContent =
-        "💖✨";
-
-    effect.style.left =
-        `${x}px`;
-
-    effect.style.top =
-        `${y}px`;
-
-    gameArea.appendChild(effect);
-
-
-    setTimeout(() => {
-
-        effect.remove();
-
-    }, 600);
-
-}
-
-
-// ======================================================
-// LIMPAR OBJETOS
-// ======================================================
-
-function clearObjects() {
-
-    document
-        .querySelectorAll(
-            ".animal, .obstacle, .coin-popup, .rescue-effect"
-        )
-        .forEach(element => {
-
-            element.remove();
-
-        });
-
-}
-
-
-// ======================================================
-// TOAST
-// ======================================================
-
-let toastTimer;
-
-function showToast(message) {
-
-    toast.textContent =
-        message;
-
-    toast.classList.add("show");
-
-    clearTimeout(toastTimer);
-
-    toastTimer =
-        setTimeout(() => {
-
-            toast.classList.remove("show");
-
-        }, 2200);
-
-}
-
-
-// ======================================================
-// TECLADO
-// ======================================================
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.code === "Space" &&
-            screens.game.classList.contains("active")
-        ) {
-
-            event.preventDefault();
-
-            if (paused) {
-
-                resumeGame();
-
-            } else {
-
-                pauseGame();
-
-            }
-
-        }
-
-
-        if (
-            event.code === "Escape" &&
-            screens.game.classList.contains("active")
-        ) {
-
-            pauseGame();
-
-        }
-
-    }
-);
-
-
-// ======================================================
-// INICIALIZAÇÃO
-// ======================================================
-
-updateUI();
-updateRecords();
-showScreen("home");
